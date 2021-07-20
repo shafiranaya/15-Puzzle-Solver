@@ -2,11 +2,14 @@
 import copy
 from heapq import heapify, heappop, heappush
 from Node import Node
+
+
 # Asumsi: susunan_akhir itu terurut
 susunan_awal = [[1,3,4,15],[2,0,5,12],[7,6,11,14],[8,9,10,13]]
 # Note: kalau target, 0 nya itu jadi 16
 susunan_akhir = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]
 jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
+
 def find_X(susunan):
     for i in range(4):
         for j in range(4):
@@ -83,9 +86,24 @@ def get_direction(i,j):
 def get_child_nodes(node):
     children = []
     i_old, j_old = node.get_coordinate_by_value(0)
-    delta = [-1,0,1]
+
+    # ver2: deltas
+    # deltas priority: up, right, down, left
+    # deltas = [[-1,0],[0,1],[1,0],[0,-1]]
+    # for delta in deltas:
+    #     i = delta[0]
+    #     j = delta[1]
+
+    # ver1 versi biasa
+    delta = [0,-1,1]
     for i in delta:
         for j in delta:
+            # prioritas gerak (-1,0,1): up, left, right, down
+            # prioritas gerak (-1,1,0): up, down, left, right
+            # prioritas gerak (1,0,-1): down, right, left, up
+            # prioritas gerak (1,-1,0): down, up, right, left
+            # prioritas gerak (0,1,-1): right, left, down, up
+            # prioritas gerak (0,-1,1): left, right, up, down
             if i*j != 0 or i == j:
                 continue
             i_new, j_new = i_old + i, j_old + j
@@ -96,19 +114,14 @@ def get_child_nodes(node):
             position = node.get_position()
             position[i_old][j_old] = position[i_new][j_new]
             position[i_new][j_new] = 0
-            # print("Move = ",move)
             moves = node.get_moves()
             moves.append(move)
-            # node.add_moves(move)
-            # print("moves = ")
-            # child_move = []
-            # child_move.append(move)
+            # child_move = move
             child = Node(position, moves, g(node.position,jawaban))
             children.append(child)
     return children
-    
+
 # Coba solve
-# Udah bisa, masih salah di moves
 def solve(susunan_awal):
     queue = []
     heapify(queue)
@@ -117,14 +130,15 @@ def solve(susunan_awal):
     iteration = 1
     while (queue):
         current_node = heappop(queue)
-        if (current_node.get_h() == 0):
+        if (current_node.get_g() == 0):
             print("Goal ketemu")
+            # print("Solusi (position): ", current_node.get_position())
             return current_node.get_moves()
             # return moves
         children = get_child_nodes(current_node)
         for child in children:
-            heappush(queue,child)
-        print("Iterasi ke-",iteration)
+            heappush(queue, child)
+        print("--- Node ke-",iteration,"---")
         current_node.print_node()
         iteration += 1
     return None
@@ -133,15 +147,15 @@ s_1 = [[1,2,3,4],[5,6,7,8],[9,10,0,11],[13,14,15,12]]
 soal = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
 # print(g(s_1,susunan_akhir))
 # print("Reachable?", is_reachable(susunan_awal))
-node = Node(soal, [], g(soal,susunan_akhir))
-children_node = get_child_nodes(node)
-for child in children_node:
-    print("Child")
-    child.print_node()
+# node = Node(soal, [], g(soal,susunan_akhir))
+# children_node = get_child_nodes(node)
+# for child in children_node:
+#     print("Child")
+#     child.print_node()
 # print(children_node)
 print("---BATAS---")
 moves = solve(soal)
-print("MOVES =",moves)
+# print("MOVES =",moves)
 # print(find_X(susunan_awal))
 # print(posisi(15,susunan_awal,susunan_akhir))
 # print(kurang(15,susunan_awal,susunan_akhir))

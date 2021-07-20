@@ -1,5 +1,6 @@
 import copy
 
+# TODO: mungkin bikin atribut children (?) optional sih
 class Node:
     def __init__(self, position, moves, cost):
         self.position = position
@@ -10,8 +11,17 @@ class Node:
     def get_position(self):
         return copy.deepcopy(self.position)
 
+    # Jumlah ubin tidak kosong yang tidak terdapat pada susunan akhir
     def get_g(self):
-        return self.cost
+        jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
+        count = 0
+        for i in range(4):
+            for j in range(4):
+                if (self.get_position()[i][j] != 0):
+                    if self.get_position()[i][j] != jawaban[i][j]:
+                        count += 1
+                        # print("i,j",i,j)
+        return count
 
     def get_h(self):
         return len(self.moves)
@@ -36,12 +46,18 @@ class Node:
 
     def __lt__(self, other):
         return self.get_f() < other.get_f()
-        
+    
+    def print_position(self):
+        for i in range(4):
+            for j in range(4):
+                print(self.position[i][j], end="\t")
+            print()
+
     def print_node(self):
         # print("-----NODE-----")
         print("Position: ")
-        print(self.position)
+        self.print_position()
         print("Moves so far: ", self.moves)
         # print("Current move/prev move: ", self.current_move)
-        print("Cost (nilai g): ",self.cost)
-        # print("nilai f:",self.get_f())
+        print("Cost (nilai g): ",self.get_g())
+        print("nilai f:",self.get_f())

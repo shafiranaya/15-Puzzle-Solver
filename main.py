@@ -3,7 +3,7 @@ import copy
 from heapq import heapify, heappop, heappush
 from Node import Node
 
-
+# TODO: ada berapa simpul yang dibangkitkan?
 # Asumsi: susunan_akhir itu terurut
 susunan_awal = [[1,3,4,15],[2,0,5,12],[7,6,11,14],[8,9,10,13]]
 # Note: kalau target, 0 nya itu jadi 16
@@ -61,15 +61,15 @@ def is_reachable(susunan_awal):
         reachable = False
     return reachable
 
-# # Jumlah ubin tidak kosong yang tidak terdapat pada susunan akhir
-# def g(susunan_awal, susunan_akhir):
-#     count = 0
-#     for i in range(4):
-#         for j in range(4):
-#             if (susunan_awal[i][j] != 0):
-#                 if susunan_awal[i][j] != susunan_akhir[i][j]:
-#                     count += 1
-#     return count
+# Jumlah ubin tidak kosong yang tidak terdapat pada susunan akhir
+def misplaced(susunan_awal, susunan_akhir):
+    count = 0
+    for i in range(4):
+        for j in range(4):
+            if (susunan_awal[i][j] != 0):
+                if susunan_awal[i][j] != susunan_akhir[i][j]:
+                    count += 1
+    return count
 
 def get_direction(i,j):
     if (i == 1 and j == 0):
@@ -124,31 +124,50 @@ def get_child_nodes(node):
     return children
 
 # Coba solve
+# TODO: benerin hitung node_count atau simpul yang dibangkitkan
 def solve(susunan_awal):
-    queue = []
-    heapify(queue)
-    node = Node(susunan_awal, [], 0)
-    heappush(queue,node)
-    iteration = 1
-    while (queue):
-        # print("Queue: ",queue)
-        print("Queue length: ",len(queue))
-        current_node = heappop(queue)
-        print("--- Iterasi ke-",iteration,"---")
-        current_node.print_node()
-        iteration += 1
-        if (current_node.get_g() == 0):
-            print("Goal ketemu")
-            # print("Solusi (position): ", current_node.get_position())
-            return current_node.get_moves()
-            # return moves
-        children = get_child_nodes(current_node)
-        for child in children:
-            heappush(queue, child)
-    return None
+    # Cek dulu apakah solvable
+    solvable = is_reachable(susunan_awal)
+    if (not solvable):
+        return "Unsolvable"
+    else:
+        expanded = []
+        queue = []
+        heapify(queue)
+        node = Node(susunan_awal, [], 0) # TODO costnya ganti ga ya (?)
+        heappush(queue,node)
+        node_count = 0
+        iteration = 1
+        while (queue):
+            # print("Queue: ",queue)
+            # print("Queue length: ",len(queue))
+            current_node = heappop(queue)
+            print("--- Iterasi ke-",iteration,"---")
+            current_node.print_node()
+            iteration += 1
+            if (current_node.get_g() == 0):
+                print("Goal ketemu")
+                # print("Queue length: ",len(queue))
+                # print("Solusi (position): ", current_node.get_position())
+                print("Simpul yg dibangkitkan",node_count)
+                return current_node.get_moves()
+                # return moves
+            children = get_child_nodes(current_node)
+            for child in children:
+                child_position = child.get_position()
+                if child_position in expanded:
+                    continue
+                heappush(queue, child)
+                expanded.append(child_position)
+                node_count += 1
+        return None
 
 s_1 = [[1,2,3,4],[5,6,7,8],[9,10,0,11],[13,14,15,12]]
-soal = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
+soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
+soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
+soal3 = [[6,5,2,4],[9,1,3,8],[10,0,7,15],[13,14,12,11]]
+soal4 = [[1,9,4,8],[3,2,6,7],[13,10,11,12],[14,5,15,0]] #
+soal_susah = [[1,9,5,6],[2,3,4,10],[7,8,13,15],[11,12,14,0]] #
 # print(g(s_1,susunan_akhir))
 # print("Reachable?", is_reachable(susunan_awal))
 # node = Node(soal, [], g(soal,susunan_akhir))
@@ -158,8 +177,19 @@ soal = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
 #     child.print_node()
 # print(children_node)
 print("---BATAS---")
-moves = solve(soal)
-print("MOVES =",moves)
+# # SOAL 1
+# m1 = misplaced(soal1,jawaban)
+# # SOAL 2
+# m2 = misplaced(soal2,jawaban)
+# # SOAL 3
+# m3 = misplaced(soal3,jawaban)
+# # SOAL 4
+# m4 = misplaced(soal4,jawaban)
+# # SOAL SUSAH
+# m5 = misplaced(soal_susah,jawaban)
+# print(m1,m2,m3,m4,m5)
+# moves = solve(soal3)
+# print("MOVES =",moves)
 # print(find_X(susunan_awal))
 # print(posisi(15,susunan_awal,susunan_akhir))
 # print(kurang(15,susunan_awal,susunan_akhir))

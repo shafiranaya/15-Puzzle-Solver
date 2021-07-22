@@ -1,0 +1,12 @@
+TESTCASE 1
+simpul: 60
+iterasi: 29
+steps: 11
+TESTCASE 2
+simpul: 363
+iterasi: 177
+steps: 20
+TESTCASE 3
+simpul: 115
+iterasi: 60
+steps: 16

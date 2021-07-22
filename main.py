@@ -124,7 +124,6 @@ def get_child_nodes(node):
     return children
 
 # Coba solve
-# TODO: benerin hitung node_count atau simpul yang dibangkitkan
 def solve(susunan_awal):
     # Cek dulu apakah solvable
     solvable = is_reachable(susunan_awal)
@@ -145,11 +144,11 @@ def solve(susunan_awal):
             print("--- Iterasi ke-",iteration,"---")
             current_node.print_node()
             iteration += 1
-            if (current_node.get_g() == 0):
+            if (current_node.get_h() == 0): # TODO ganti
                 print("Goal ketemu")
-                # print("Queue length: ",len(queue))
+                print("Queue length: ",len(queue))
                 # print("Solusi (position): ", current_node.get_position())
-                print("Simpul yg dibangkitkan",node_count)
+                print("Simpul yang dibangkitkan",node_count)
                 return current_node.get_moves()
                 # return moves
             children = get_child_nodes(current_node)
@@ -162,11 +161,24 @@ def solve(susunan_awal):
                 node_count += 1
         return None
 
+def print_solution(node, moves):
+    i = 1
+    for direction in moves:
+        print("Step "+str(i)+": "+ direction)
+        node.move(direction)
+        node.print_position()
+        i+=1
+
 s_1 = [[1,2,3,4],[5,6,7,8],[9,10,0,11],[13,14,15,12]]
 soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
 soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
 soal3 = [[6,5,2,4],[9,1,3,8],[10,0,7,15],[13,14,12,11]]
 soal4 = [[1,9,4,8],[3,2,6,7],[13,10,11,12],[14,5,15,0]] #
+
+puzzle2 = [[5,1,3,4],[9,2,6,7],[13,10,11,8],[0,14,15,12]]
+puzzle3 = [[5,1,3,4],[9,2,6,7],[13,11,0,8],[14,10,15,12]]
+puzzle4 = [[1,6,7,5],[9,3,10,2],[13,8,4,12],[14,11,15,0]]
+
 soal_susah = [[1,9,5,6],[2,3,4,10],[7,8,13,15],[11,12,14,0]] #
 # print(g(s_1,susunan_akhir))
 # print("Reachable?", is_reachable(susunan_awal))
@@ -179,17 +191,50 @@ soal_susah = [[1,9,5,6],[2,3,4,10],[7,8,13,15],[11,12,14,0]] #
 print("---BATAS---")
 # # SOAL 1
 # m1 = misplaced(soal1,jawaban)
+# ASTAR
+# iterasi: 4
+# simpul: 10
+# steps: 3
 # # SOAL 2
 # m2 = misplaced(soal2,jawaban)
+# ASTAR
+# iterasi: 7
+# simpul: 12
+# steps: 6
 # # SOAL 3
 # m3 = misplaced(soal3,jawaban)
+# BNB
+# iterasi: 405
+# simpul: 844
+# steps: 17
+# ASTAR
+# iterasi: 534
+# simpul: 1066
+# steps: 83
+# ASTAR REVISI
+
 # # SOAL 4
 # m4 = misplaced(soal4,jawaban)
 # # SOAL SUSAH
 # m5 = misplaced(soal_susah,jawaban)
 # print(m1,m2,m3,m4,m5)
-# moves = solve(soal3)
-# print("MOVES =",moves)
+
+# PUZZLE 2
+# ASTAR
+# iterasi: 10
+# simpul: 20
+# steps: 9
+# PUZZLE 3
+# ASTAR
+# iterasi: 13
+# simpul: 28
+# steps: 12
+moves = solve(puzzle4)
+print("MOVES =",moves)
+node1 = Node(puzzle4, [], 0) # TODO costnya ganti ga ya (?)
+print("Solusi:")
+print_solution(node1, moves)
+
 # print(find_X(susunan_awal))
 # print(posisi(15,susunan_awal,susunan_akhir))
 # print(kurang(15,susunan_awal,susunan_akhir))

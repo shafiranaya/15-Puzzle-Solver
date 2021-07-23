@@ -1,31 +1,22 @@
 # GUI
 
-# TODO: fungsi untuk cetak langkah2 dll
-# TODO: fungsi utk cetak puzzle 
-
-# TODO: sambungin pencetan solve
-# TODO nanti kalo pencet solve, kebuka window baru yang isinya solusi. (DONE)
-# TODO trus print2 puzzle nya, dimasukin ke scrollbar gitu deh (DONE)
-
-from main import solve
+from main import solve, is_valid
 from tkinter import *
 from Node import Node
-# from main import solve
+from tkinter import messagebox
+
+# TODO: buat jadi horizontally centered dan rapih2in GUI!
 entries = []
 
-def initialize(arr):
-    # print(arr)
+def initialize():
     global matrix
-    En = entries
-    print("En=",En,"len=",len(En))
     matrix = [[0 for i in range(4)] for j in range(4)]
     for i in range(4):
         for j in range(4):
-            if (not En[(4*i)+j].get()):
+            if (not entries[(4*i)+j].get()):
                 matrix[i][j] = 0
             else:
-                matrix[i][j] = int(En[(4*i)+j].get())
-    print("MATRIX=",matrix)
+                matrix[i][j] = int(entries[(4*i)+j].get())
 
 # Buat print satu step gitu deh
 def print_puzzle(top,matrix):
@@ -35,13 +26,14 @@ def print_puzzle(top,matrix):
     for i in range(4):
         for j in range(4):
             if (matrix[i][j] == 0):
-                numbers[i][j] = Label(btns_frame, text=" ", width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+                numbers[i][j] = Label(btns_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
             else:
-                numbers[i][j] = Label(btns_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="#fff").grid(row=i, column=j,padx=1,pady=1)
+                numbers[i][j] = Label(btns_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
 
 def solution_GUI(matrix): 
     # Create canvas with scrollbar
     window = Tk()
+    window.title("15-Puzzle Solver - Solution")
     canvas = Canvas(window)
     scrollbar = Scrollbar(window, command=canvas.yview)
     canvas.configure(yscrollcommand = scrollbar.set)
@@ -80,34 +72,33 @@ def solution_GUI(matrix):
     scrollbar.pack(side=RIGHT,fill="y")
     window.mainloop()
 
+def show_solution():
+    initialize()
+    # Validate input
+    valid = is_valid(matrix)
+    # Show solution
+    if (valid):
+        solution_GUI(matrix)
+    else:
+        messagebox.showinfo("Error","Input yang dimasukkan salah.")
+        reset()
+
 def problem_GUI():
-    global matrix
     window = Tk()
     window.title("15-Puzzle Solver")
-    canvas = Canvas(window, height=320, width =350)
-    # top2 = Tk()
-    # list_of_puzzles = []
-    # jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
-    # list_of_puzzles.append(maze)
-    # list_of_puzzles.append(jawaban)
-
+    window.geometry("750x500")
+    window.grid_rowconfigure(0,weight=1)
+    window.grid_columnconfigure(0,weight=1)
+    # canvas = Canvas(window, height=320, width =350)
     create_entry(window)
-    create_buttons(window)
-    # print_puzzle(top2,jawaban)
-    # print_puzzle(top2,maze)
-    canvas.pack(side = 'top')
+    # canvas.pack(side = 'top')
     window.mainloop()
-    # top2.mainloop()
     
 def create_buttons(window):
-    # button_solve = Button(top, text="Solve", justify='left', default='active', command = lambda: play_Game(top,maze))
-    button_reset = Button(window, text="Reset", justify='right', command = lambda: reset())
-    button_check = Button(window, text="Check", justify='left', default='active', command = lambda: solution_GUI(matrix))
-    # button_print = Button(top, text="Print", justify='center', default='active', command = lambda: print_puzzle(initialize(top,maze)))
-    # button_solve.place(x=70, y=275, height=30, width=60)
-    button_check.place(x=70, y=275, height=30, width=60)
-    button_reset.place(x=230, y=275, height=30, width=60)
-    # button_print.place(x=300, y=275, height=30, width=60)
+    button_reset = Button(window, text="Reset", justify='center', command = lambda: reset())
+    button_solve = Button(window, text="Solve", justify='center', command = lambda: show_solution())
+    button_solve.grid(row=5,column=1)
+    button_reset.grid(row=5,column=2)
 
 def reset():
     for e in entries:
@@ -115,26 +106,43 @@ def reset():
 
 def create_entry(window):
     global matrix
-    p,q=41.4,41.4
+
+    # entries_frame = Frame(window).grid(row=0,column=0)
+    # entries_frame = Frame(window, width = 312, height = 272.5).grid(row=0,column=0)
+    # entries_frame.pack()
+    # p,q=41.4,41.4
+    # for i in range(4):
+    #     for j in range(4):
+    #         E = Entry(window, width=3, font = 'BOLD')
+    #         E.grid(row=i, column=j)
+    #         E.place(x=p, y=q, height=20, width=25)
+    #         entries.append(E)
+    #         p+=30.0
+    #     q+=24.5
+    #     p=41.2
+
+    entries_frame = Frame(window, width = 312, height = 272.5, bg = "grey")
+    entries_frame.grid(row=0,column=0)
+    # entries_frame.grid_rowconfigure(1,weight=1)
+    # entries_frame.grid_columnconfigure(1,weight=1)
+#     label.grid(row=2, column=0)
+# label.grid_rowconfigure(1, weight=1)
+# label.grid_columnconfigure(1, weight=1)
+ 
     for i in range(4):
         for j in range(4):
-            E = Entry(window, width=3, font = 'BOLD')
-            E.grid(row=i, column=j)
-            E.place(x=p, y=q, height=20, width=25)
-            entries.append(E)
-            p+=30.0
-        q+=24.5
-        p=41.2
+            entry_label = Label(entries_frame, text=" ", width=5, height=3, bg="white",bd=0).grid(row=i, column=j,padx=1,pady=1)
+            # entry = Entry(entries_frame,width=3).grid(row=0, column=0)
+            entry = Entry(entries_frame,width=3)
+            entry.grid(row=i,column=j)
+            # entry.grid(row=i+1,column=j+1)
+            entries.append(entry)
+    create_buttons(entries_frame)
+
     
 if __name__=="__main__":
     jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
-    # print_puzzle(jawaban)
-    mat =[[0 for x in range(4)]for y in range(4)]
-    # problem_GUI()
-    # matrix = initialize(entries)
+    problem_GUI()
     soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
     soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
-
-    solution_GUI(soal2)
-    # print_maze(entries)
     print(entries)

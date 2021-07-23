@@ -175,6 +175,8 @@ def is_not_unique(matrix):
             return True 
     return False
 
+def is_valid(matrix):
+    return (not is_out_of_range(matrix)) and (not is_not_unique(matrix))
 ### DRIVER ###
 
 s_1 = [[1,2,3,4],[5,6,7,8],[9,10,0,11],[13,14,15,12]]

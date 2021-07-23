@@ -127,7 +127,7 @@ def solve(susunan_awal):
                 heappush(queue, child)
                 expanded.append(child_position)
                 node_count += 1
-        return None
+        # return None
 
 def print_solution(node, moves):
     i = 1
@@ -158,8 +158,8 @@ soal_susah = [[1,9,5,6],[2,3,4,10],[7,8,13,15],[11,12,14,0]] # SUSAH
 
 print("---BATAS---")
 
-moves = solve(puzzle4)
+moves = solve(soal1)
 print("MOVES =",moves)
-node1 = Node(puzzle4, [], 0) # TODO costnya ganti ga ya (?)
+node1 = Node(soal1, [], 0) # TODO costnya ganti ga ya (?)
 print("Solusi:")
 print_solution(node1, moves)

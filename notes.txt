@@ -9,7 +9,6 @@
         # prioritas gerak (0,1,-1): right, left, down, up
         # prioritas gerak (0,-1,1): left, right, up, down
 
-
 # SOAL 1
 m1 = misplaced(soal1,jawaban)
 ASTAR

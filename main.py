@@ -97,7 +97,7 @@ def solve(susunan_awal):
     # Cek dulu apakah solvable
     solvable = is_reachable(susunan_awal)
     if (not solvable):
-        return "Unsolvable"
+        return []
     else:
         expanded = []
         queue = []
@@ -117,7 +117,7 @@ def solve(susunan_awal):
                 # print("Solusi (position): ", current_node.get_position())
                 print("Simpul yang dibangkitkan",node_count)
                 solution = current_node.get_moves()
-                return solution
+                return solution, node_count
                 # return moves
             children = get_child_nodes(current_node)
             for child in children:
@@ -136,6 +136,44 @@ def print_solution(node, moves):
         node.move(direction)
         node.print_position()
         i+=1
+
+# TODO: validasi input ->
+# - Harus ada satu cell kosong
+# - Utk cell ga kosong, angkanya mesti 1-15
+# - gaboleh ada angka yg double
+
+def convert_matrix_to_list(matrix):
+    new_list = []
+    for i in range(4):
+        for j in range(4):
+            new_list.append(matrix[i][j])
+    return new_list
+
+# # Hanya boleh SATU cell kosong
+# def is_one_empty(matrix):
+#     new_list = convert_matrix_to_list(matrix)
+#     count_empty = new_list.count(0)
+#     return (count_empty == 1)
+
+# Range: 0-15
+def is_out_of_range(matrix):
+    new_list = convert_matrix_to_list(matrix)
+    # count_out_of_range = new_list.count(matrix[i][j])
+    for i in range(4):
+        for j in range(4):
+            if (matrix[i][j] < 0 or matrix[i][j] > 15):
+                return True
+    return False
+
+def is_not_unique(matrix):
+    occurences = []
+    new_list = convert_matrix_to_list(matrix)
+    for i in range(16):
+        occurences.append(new_list.count(i))
+    for count in occurences:
+        if count != 1:
+            return True 
+    return False
 
 ### DRIVER ###
 
@@ -158,7 +196,7 @@ soal_susah = [[1,9,5,6],[2,3,4,10],[7,8,13,15],[11,12,14,0]] # SUSAH
 
 print("---BATAS---")
 
-moves = solve(soal1)
+moves = solve(soal1)[0]
 print("MOVES =",moves)
 node1 = Node(soal1, [], 0) # TODO costnya ganti ga ya (?)
 print("Solusi:")

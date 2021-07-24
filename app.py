@@ -19,15 +19,15 @@ def initialize():
 
 # Buat print satu step gitu deh
 def print_puzzle(top,matrix):
-    puzzle_frame = Frame(top, width = 312, height = 272.5, bg = "grey")
+    puzzle_frame = Frame(top, width = 312, height = 272.5, bg = "#F29191")
     puzzle_frame.pack()
     numbers = [[0 for i in range(4)] for j in range(4)]
     for i in range(4):
         for j in range(4):
             if (matrix[i][j] == 0):
-                numbers[i][j] = Label(puzzle_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
+                numbers[i][j] = Label(puzzle_frame, text=" ", width=5, height=3, bd=0, bg="#D1D9D9").grid(row=i, column=j,padx=1,pady=1)
             else:
-                numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+                numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="#EEC4C4").grid(row=i, column=j,padx=1,pady=1)
 
 def solution_GUI(matrix): 
     # Create canvas with scrollbar
@@ -94,14 +94,20 @@ def problem_GUI():
     # centering
     window.grid_rowconfigure(0,weight=1)
     window.grid_columnconfigure(0,weight=1)
+
     create_entry(window)
     window.mainloop()
     
 def create_buttons(window):
+    title_label = Label(window, text="15 Puzzle Solver", justify="center",bg="#D1D9D9")
+    title_label.grid(row=0, column=0,columnspan=4)
+    # blank_label = Label(window,text="",bg="#94D0CC")
+    # blank_label.grid(row=6,column=0,columnspan=4)
     button_reset = Button(window, text="Reset", justify='center', command = lambda: reset())
     button_solve = Button(window, text="Solve", justify='center', command = lambda: show_solution())
-    button_solve.grid(row=5,column=1)
-    button_reset.grid(row=5,column=2)
+    button_solve.grid(row=5,column=0,columnspan=2)
+    button_reset.grid(row=5,column=2,columnspan=2)
+    title_label.grid(row=0, column=0,columnspan=4)
 
 def reset():
     for e in entries:
@@ -110,14 +116,14 @@ def reset():
 def create_entry(window):
     global matrix
 
-    entries_frame = Frame(window, width = 312, height = 272.5, bg = "grey")
+    entries_frame = Frame(window, width = 312, height = 272.5, bg="#D1D9D9")
     entries_frame.grid(row=0,column=0)
 
     for i in range(4):
         for j in range(4):
-            entry_label = Label(entries_frame, text=" ", width=5, height=3, bg="white",bd=0).grid(row=i, column=j,padx=1,pady=1)
+            entry_label = Label(entries_frame, text=" ", width=5, height=3, bg="#ffffff",bd=0).grid(row=i+1, column=j,padx=1,pady=1)
             entry = Entry(entries_frame,width=3)
-            entry.grid(row=i,column=j)
+            entry.grid(row=i+1,column=j)
             entries.append(entry)
 
     create_buttons(entries_frame)

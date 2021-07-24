@@ -42,6 +42,40 @@ def create_puzzle(matrix):
                 numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
     return puzzle_frame
 
+def create_puzzle_awal(matrix):
+    puzzle_frame = Frame(width = 312, height = 272.5, bg = "grey")
+    # puzzle_frame.pack()
+    # Print puzzle soal
+    title = Label(puzzle_frame, text="\nSolution\n").grid(row=0,column=0)
+    # print_puzzle(create_puzzle, matrix)
+
+    solution, node_count = solve(matrix)
+
+    # Print ada berapa node yang dibangkitkan
+    node_display = "Simpul yang dibangkitkan: " + str(node_count)
+    node_label = Label(puzzle_frame, text=node_display).grid(row=1,column=0)
+
+    # Print ada berapa steps, stepsnya apa saja
+    steps_display = "Jumlah langkah yang dibutuhkan untuk menyelesaikan puzzle: " + str(len(solution))
+    moves_display = "Langkah: "
+    for i in range(len(solution)):
+        if (i != (len(solution)-1)):
+            moves_display += solution[i] + " -> "
+        else:
+            moves_display += solution[i]
+    steps_label = Label(puzzle_frame, text=steps_display).grid(row=2,column=0)
+    moves_label = Label(puzzle_frame, text=moves_display).grid(row=3,column=0)
+    numbers = [[0 for i in range(4)] for j in range(4)]
+    x = 0
+    y = 1
+    for i in range(4):
+        for j in range(4):
+            if (matrix[i][j] == 0):
+                numbers[i][j] = Label(puzzle_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=x+i, column=y+j,padx=1,pady=1)
+            else:
+                numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=x+i, column=y+j,padx=1,pady=1)
+    return puzzle_frame
+
 def create_puzzle_solution(matrix,direction,num):
     puzzle_frame = Frame(width = 312, height = 272.5, bg = "grey")
     # node = Node(matrix, [], 0)
@@ -57,31 +91,6 @@ def create_puzzle_solution(matrix,direction,num):
             else:
                 numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
     return puzzle_frame
-
-# def animate(self):
-    # if not self.should_stop:
-    #     self.draw_one_frame()
-    #     self.after(100, self.animate)
-
-# def change_position():
-#     node = Node(matrix, [], 0)
-#     solution = solve(matrix)[0]
-#     for i in range(len(solution)):
-#         node.move(solution[i]) 
-#         window.after(100,change_position)      
-
-# def animate_puzzle(window, solution):
-#     # Show position per step
-#     # self.draw_one_frame()
-#     # self.after(100, self.animate)
-#     node = Node(matrix, [], 0)
-#     for i in range(len(solution)):
-#         node.move(solution[i])
-#         info_display = "\nStep " + str(i+1) + ": " + solution[i]
-#         info_label = Label(window, text=info_display).pack()
-#         print_puzzle(window,node.get_position())
-#         window.after(100,print_puzzle(window,node.get_position))
-#         # window.delete("all")
 
 def solution_GUI(matrix): 
     # Create canvas with scrollbar
@@ -170,13 +179,7 @@ def create_entry(window):
 
     entries_frame = Frame(window, width = 312, height = 272.5, bg = "grey")
     entries_frame.grid(row=0,column=0)
-    # entries_frame.grid_rowconfigure(1,weight=1)
-    # entries_frame.grid_columnconfigure(1,weight=1)
 
-    # label.grid(row=2, column=0)
-    # label.grid_rowconfigure(1, weight=1)
-    # label.grid_columnconfigure(1, weight=1)
- 
     for i in range(4):
         for j in range(4):
             entry_label = Label(entries_frame, text=" ", width=5, height=3, bg="white",bd=0).grid(row=i, column=j,padx=1,pady=1)

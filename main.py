@@ -122,7 +122,7 @@ def solve(susunan_awal):
                 
                 # positions = current_node.get_position_so_far()
 
-                return solution, current_node
+                return solution, node_count
                 # return moves
             children = get_child_nodes(current_node)
             for child in children:

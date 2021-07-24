@@ -45,16 +45,14 @@ def create_puzzle(matrix):
 def create_puzzle_awal(matrix):
     puzzle_frame = Frame(width = 312, height = 272.5, bg = "grey")
     # puzzle_frame.pack()
-    # Print puzzle soal
-    title = Label(puzzle_frame, text="\nSolution\n").grid(row=0,column=0)
+    # Print puzzle 
+
+    title = Label(puzzle_frame, text="\nSoal: \n").grid(row=0,column=0)
     # print_puzzle(create_puzzle, matrix)
-
     solution, node_count = solve(matrix)
-
     # Print ada berapa node yang dibangkitkan
     node_display = "Simpul yang dibangkitkan: " + str(node_count)
     node_label = Label(puzzle_frame, text=node_display).grid(row=1,column=0)
-
     # Print ada berapa steps, stepsnya apa saja
     steps_display = "Jumlah langkah yang dibutuhkan untuk menyelesaikan puzzle: " + str(len(solution))
     moves_display = "Langkah: "
@@ -78,9 +76,6 @@ def create_puzzle_awal(matrix):
 
 def create_puzzle_solution(matrix,direction,num):
     puzzle_frame = Frame(width = 312, height = 272.5, bg = "grey")
-    # node = Node(matrix, [], 0)
-    # for i in range(len(solution)):
-    # node.move(direction)
     info_display = "\nStep " + str(num+1) + ": " + direction
     info_label = Label(text=info_display).grid(row=5, column=0)
     numbers = [[0 for i in range(4)] for j in range(4)]
@@ -103,9 +98,10 @@ def solution_GUI(matrix):
     canvas.bind('<Configure>',  lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
     solution_window = Frame(canvas)
     canvas.create_window((0,0), window=solution_window, anchor='nw')
-
+    # canvas.grid_rowconfigure(0,weight=1)
+    # canvas.grid_columnconfigure(0,weight=1)
     # Print puzzle soal
-    title = Label(solution_window, text="\nSolution\n").pack()
+    title = Label(solution_window, text="\nSoal: \n").pack()
     print_puzzle(solution_window, matrix)
 
     solution, node_count = solve(matrix)
@@ -131,9 +127,6 @@ def solution_GUI(matrix):
         info_label = Label(solution_window, text=info_display).pack()
         print_puzzle(solution_window,node.get_position())
 
-    # Animation (kalo sempet aja)
-    # animate_puzzle(window,solution)
-
     canvas.pack(side=LEFT,fill="both",expand=True)
     scrollbar.pack(side=RIGHT,fill="y")
     window.mainloop()
@@ -157,11 +150,10 @@ def problem_GUI():
     window = Tk()
     window.title("15-Puzzle Solver")
     window.geometry("750x500")
+    # centering
     window.grid_rowconfigure(0,weight=1)
     window.grid_columnconfigure(0,weight=1)
-    # canvas = Canvas(window, height=320, width =350)
     create_entry(window)
-    # canvas.pack(side = 'top')
     window.mainloop()
     
 def create_buttons(window):
@@ -183,17 +175,15 @@ def create_entry(window):
     for i in range(4):
         for j in range(4):
             entry_label = Label(entries_frame, text=" ", width=5, height=3, bg="white",bd=0).grid(row=i, column=j,padx=1,pady=1)
-            # entry = Entry(entries_frame,width=3).grid(row=0, column=0)
             entry = Entry(entries_frame,width=3)
             entry.grid(row=i,column=j)
-            # entry.grid(row=i+1,column=j+1)
             entries.append(entry)
+    
     create_buttons(entries_frame)
 
-    
 if __name__=="__main__":
-    jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
+    # jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
     problem_GUI()
-    soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
-    soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
-    print(entries)
+    # soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
+    # soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
+    # print(entries)

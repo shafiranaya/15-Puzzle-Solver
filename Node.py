@@ -1,7 +1,6 @@
 import copy
 from tkinter import *
 class Node:
-
     def __init__(self, position, moves, cost):
         self.position = position
         self.moves  = moves # moves so far
@@ -13,7 +12,7 @@ class Node:
     def set_position(self, position):
         self.position = position
 
-    # # Jumlah manhattan distance (jarak antara posisi saat itu dengan posisi seharusnya) ubin tidak kosong yang tidak terdapat pada susunan akhir
+    # Jumlah manhattan distance (jarak antara posisi saat itu dengan posisi seharusnya) ubin tidak kosong yang tidak terdapat pada susunan akhir
     def get_g(self):
         jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
         distance = 0
@@ -48,23 +47,24 @@ class Node:
     def __lt__(self, other):
         return self.get_f() < other.get_f()
     
-    def print_position(self):
-        for i in range(4):
-            for j in range(4):
-                print(self.position[i][j], end="\t")
-            print()
+    # # For console
+    # def print_position(self):
+    #     for i in range(4):
+    #         for j in range(4):
+    #             print(self.position[i][j], end="\t")
+    #         print()
 
-    # For debugging
-    def print_node(self):
-        print("-----NODE-----")
-        print("Position: ")
-        self.print_position()
-        print("Moves so far: ", self.moves)
-        if (self.moves):
-            print("Prev move: ", self.moves[-1])
-        print("Cost (nilai g): ",self.get_g())
-        print("Heuristic: ",self.get_h())
-        print("nilai f:",self.get_f())
+    # # For console
+    # def print_node(self):
+    #     print("-----NODE-----")
+    #     print("Position: ")
+    #     self.print_position()
+    #     print("Moves so far: ", self.moves)
+    #     if (self.moves):
+    #         print("Prev move: ", self.moves[-1])
+    #     print("Cost (nilai g): ",self.get_g())
+    #     print("Heuristic: ",self.get_h())
+    #     print("nilai f:",self.get_f())
 
     # Change position
     def move(self,direction):

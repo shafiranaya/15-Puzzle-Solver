@@ -52,7 +52,6 @@ def is_reachable(susunan_awal):
     for i in range (1,17):
         total += kurang(i,susunan_awal)
     total += X
-    print("X =",X,"total = ",total)
     if (total % 2 == 0):
         reachable = True
     else:
@@ -108,13 +107,13 @@ def solve(susunan_awal):
         iteration = 1
         while (queue):
             current_node = heappop(queue)
-            print("--- Iterasi ke-",iteration,"---")
-            current_node.print_node()
+            # print("--- Iterasi ke-",iteration,"---")
+            # current_node.print_node()
             iteration += 1
             if (current_node.get_g() == 0):
-                print("Goal ketemu")
-                print("Queue length: ",len(queue))
-                print("Simpul yang dibangkitkan",node_count)
+                # print("Goal ketemu")
+                # print("Queue length: ",len(queue))
+                # print("Simpul yang dibangkitkan",node_count)
                 solution = current_node.get_moves()
                 return solution, node_count # return list of moves
             children = get_child_nodes(current_node)
@@ -127,14 +126,14 @@ def solve(susunan_awal):
                 node_count += 1
         return None
 
-# Command line print
-def print_solution(node, moves):
-    i = 1
-    for direction in moves:
-        print("Step "+str(i)+": "+ direction)
-        node.move(direction)
-        node.print_position()
-        i+=1
+# # Command line print
+# def print_solution(node, moves):
+#     i = 1
+#     for direction in moves:
+#         print("Step "+str(i)+": "+ direction)
+#         node.move(direction)
+#         node.print_position()
+#         i+=1
 
 def convert_matrix_to_list(matrix):
     new_list = []
@@ -154,11 +153,11 @@ def is_out_of_range(matrix):
     return False
 
 def is_not_unique(matrix):
-    occurences = []
+    count_list = []
     new_list = convert_matrix_to_list(matrix)
     for i in range(16):
-        occurences.append(new_list.count(i))
-    for count in occurences:
+        count_list.append(new_list.count(i))
+    for count in count_list:
         if count != 1:
             return True 
     return False

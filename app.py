@@ -41,17 +41,14 @@ def solution_GUI(matrix):
     solution_window = Frame(canvas)
     canvas.create_window((0,0), window=solution_window, anchor='nw')
  
-    # Print puzzle soal
+    # Print inputted puzzle
     title = Label(solution_window, text="\nSoal: \n").pack()
     print_puzzle(solution_window, matrix)
-
+    
+    # Solve
     solution, node_count = solve(matrix)
 
-    # Print ada berapa node yang dibangkitkan
-    node_display = "Simpul yang dibangkitkan: " + str(node_count)
-    node_label = Label(solution_window, text=node_display).pack()
-
-    # Print ada berapa steps, stepsnya apa saja
+    # Print steps
     steps_display = "Jumlah langkah yang dibutuhkan untuk menyelesaikan puzzle: " + str(len(solution)) + "\n" + "Langkah: "
     for i in range(len(solution)):
         if (i != (len(solution)-1)):
@@ -87,7 +84,7 @@ def show_solution():
         messagebox.showinfo("Error","Input yang dimasukkan salah.")
         reset()
 
-def problem_GUI():
+def GUI():
     window = Tk()
     window.title("15-Puzzle Solver")
     window.geometry("750x500")
@@ -129,8 +126,4 @@ def create_entry(window):
     create_buttons(entries_frame)
 
 if __name__=="__main__":
-    # jawaban = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]]
-    problem_GUI()
-    # soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
-    # soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
-    # print(entries)
+    GUI()

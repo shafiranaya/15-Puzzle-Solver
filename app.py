@@ -5,7 +5,7 @@ from tkinter import *
 from Node import Node
 from tkinter import messagebox
 
-# TODO: buat jadi horizontally centered dan rapih2in GUI!
+# TODO: buat window solution nya jadi horizontally centered dan rapih2in GUI!
 entries = []
 
 def initialize():
@@ -20,20 +20,74 @@ def initialize():
 
 # Buat print satu step gitu deh
 def print_puzzle(top,matrix):
-    btns_frame = Frame(top, width = 312, height = 272.5, bg = "grey")
-    btns_frame.pack()
+    puzzle_frame = Frame(top, width = 312, height = 272.5, bg = "grey")
+    puzzle_frame.pack()
     numbers = [[0 for i in range(4)] for j in range(4)]
     for i in range(4):
         for j in range(4):
             if (matrix[i][j] == 0):
-                numbers[i][j] = Label(btns_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
+                numbers[i][j] = Label(puzzle_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
             else:
-                numbers[i][j] = Label(btns_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+                numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+
+def create_puzzle(matrix):
+    puzzle_frame = Frame(width = 312, height = 272.5, bg = "grey")
+    # puzzle_frame.pack()
+    numbers = [[0 for i in range(4)] for j in range(4)]
+    for i in range(4):
+        for j in range(4):
+            if (matrix[i][j] == 0):
+                numbers[i][j] = Label(puzzle_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
+            else:
+                numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+    return puzzle_frame
+
+def create_puzzle_solution(matrix,direction,num):
+    puzzle_frame = Frame(width = 312, height = 272.5, bg = "grey")
+    # node = Node(matrix, [], 0)
+    # for i in range(len(solution)):
+    # node.move(direction)
+    info_display = "\nStep " + str(num+1) + ": " + direction
+    info_label = Label(text=info_display).grid(row=5, column=0)
+    numbers = [[0 for i in range(4)] for j in range(4)]
+    for i in range(4):
+        for j in range(4):
+            if (matrix[i][j] == 0):
+                numbers[i][j] = Label(puzzle_frame, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
+            else:
+                numbers[i][j] = Label(puzzle_frame, text=str(matrix[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+    return puzzle_frame
+
+# def animate(self):
+    # if not self.should_stop:
+    #     self.draw_one_frame()
+    #     self.after(100, self.animate)
+
+# def change_position():
+#     node = Node(matrix, [], 0)
+#     solution = solve(matrix)[0]
+#     for i in range(len(solution)):
+#         node.move(solution[i]) 
+#         window.after(100,change_position)      
+
+# def animate_puzzle(window, solution):
+#     # Show position per step
+#     # self.draw_one_frame()
+#     # self.after(100, self.animate)
+#     node = Node(matrix, [], 0)
+#     for i in range(len(solution)):
+#         node.move(solution[i])
+#         info_display = "\nStep " + str(i+1) + ": " + solution[i]
+#         info_label = Label(window, text=info_display).pack()
+#         print_puzzle(window,node.get_position())
+#         window.after(100,print_puzzle(window,node.get_position))
+#         # window.delete("all")
 
 def solution_GUI(matrix): 
     # Create canvas with scrollbar
     window = Tk()
     window.title("15-Puzzle Solver - Solution")
+    window.geometry("750x500")
     canvas = Canvas(window)
     scrollbar = Scrollbar(window, command=canvas.yview)
     canvas.configure(yscrollcommand = scrollbar.set)
@@ -68,6 +122,9 @@ def solution_GUI(matrix):
         info_label = Label(solution_window, text=info_display).pack()
         print_puzzle(solution_window,node.get_position())
 
+    # Animation (kalo sempet aja)
+    # animate_puzzle(window,solution)
+
     canvas.pack(side=LEFT,fill="both",expand=True)
     scrollbar.pack(side=RIGHT,fill="y")
     window.mainloop()
@@ -76,9 +133,13 @@ def show_solution():
     initialize()
     # Validate input
     valid = is_valid(matrix)
+    solution = solve(matrix)
     # Show solution
     if (valid):
-        solution_GUI(matrix)
+        if (solution == []):
+            messagebox.showinfo("Error","Puzzle unsolvable")
+        else:
+            solution_GUI(matrix)
     else:
         messagebox.showinfo("Error","Input yang dimasukkan salah.")
         reset()
@@ -107,27 +168,14 @@ def reset():
 def create_entry(window):
     global matrix
 
-    # entries_frame = Frame(window).grid(row=0,column=0)
-    # entries_frame = Frame(window, width = 312, height = 272.5).grid(row=0,column=0)
-    # entries_frame.pack()
-    # p,q=41.4,41.4
-    # for i in range(4):
-    #     for j in range(4):
-    #         E = Entry(window, width=3, font = 'BOLD')
-    #         E.grid(row=i, column=j)
-    #         E.place(x=p, y=q, height=20, width=25)
-    #         entries.append(E)
-    #         p+=30.0
-    #     q+=24.5
-    #     p=41.2
-
     entries_frame = Frame(window, width = 312, height = 272.5, bg = "grey")
     entries_frame.grid(row=0,column=0)
     # entries_frame.grid_rowconfigure(1,weight=1)
     # entries_frame.grid_columnconfigure(1,weight=1)
-#     label.grid(row=2, column=0)
-# label.grid_rowconfigure(1, weight=1)
-# label.grid_columnconfigure(1, weight=1)
+
+    # label.grid(row=2, column=0)
+    # label.grid_rowconfigure(1, weight=1)
+    # label.grid_columnconfigure(1, weight=1)
  
     for i in range(4):
         for j in range(4):

@@ -2,16 +2,21 @@ import copy
 from tkinter import *
 # TODO: mungkin bikin atribut children (?) optional sih
 class Node:
+    position_so_far = []
     def __init__(self, position, moves, cost):
         self.position = position
         self.moves  = moves # moves so far
         self.cost = cost # didapat dari fungsi g
-
+        # self.position_so_far = position_so_far
     def get_position(self):
         return copy.deepcopy(self.position)
 
     def set_position(self, position):
         self.position = position
+
+    def get_position_so_far(self):
+        return copy.copy(self.position_so_far)
+        # return self.position_so_far
 
     # # Jumlah manhattan distance (jarak antara posisi saat itu dengan posisi seharusnya) ubin tidak kosong yang tidak terdapat pada susunan akhir
     def get_g(self):
@@ -54,15 +59,23 @@ class Node:
                 print(self.position[i][j], end="\t")
             print()
 
-    # def position_gui(self, parent):
-    #     position_frame = Frame(parent, width = 312, height = 272.5, bg = "grey")
-    #     position_frame.pack()
+    # def draw(self, canvas):
     #     numbers = [[0 for i in range(4)] for j in range(4)]
+    #     # node = Node(soal1, [], 0)
     #     for i in range(4):
     #         for j in range(4):
-    #             numbers[i][j] = Label(btns_frame, text=str(self.position[i][j]), width=5, height=3, bd=0, bg="#fff").grid(row=i, column=j,padx=1,pady=1)
-    #     return position_frame
+    #             if (self.position[i][j] == 0):
+    #                 numbers[i][j] = Label(canvas, text=" ", width=5, height=3, bd=0, bg="white").grid(row=i, column=j,padx=1,pady=1)
+    #             else:
+    #                 numbers[i][j] = Label(canvas, text=str(self.position[i][j]), width=5, height=3, bd=0, bg="pink").grid(row=i, column=j,padx=1,pady=1)
+    #     # position_frame = Frame(parent, width = 312, height = 272.5, bg = "grey")
+    #     # position_frame.pack()
+    #     # numbers = [[0 for i in range(4)] for j in range(4)]
+    #     # for i in range(4):
+    #     #     for j in range(4):
+    #     #         numbers[i][j] = Label(position_frame, text=str(self.position[i][j]), width=5, height=3, bd=0, bg="#fff").grid(row=i, column=j,padx=1,pady=1)
     
+
     def print_node(self):
         # print("-----NODE-----")
         print("Position: ")

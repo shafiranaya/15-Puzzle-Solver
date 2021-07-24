@@ -86,6 +86,8 @@ def get_child_nodes(node):
         position[i_new][j_new] = 0
         moves = node.get_moves()
         moves.append(direction)
+        # positions = node.get_position_so_far()
+        # positions.append(position)
         g = node.get_g()
         h = node.get_h()
         child = Node(position, moves, g+h)
@@ -117,7 +119,10 @@ def solve(susunan_awal):
                 # print("Solusi (position): ", current_node.get_position())
                 print("Simpul yang dibangkitkan",node_count)
                 solution = current_node.get_moves()
-                return solution, node_count
+                
+                # positions = current_node.get_position_so_far()
+
+                return solution, current_node
                 # return moves
             children = get_child_nodes(current_node)
             for child in children:
@@ -200,6 +205,6 @@ print("---BATAS---")
 
 moves = solve(soal1)[0]
 print("MOVES =",moves)
-node1 = Node(soal1, [], 0) # TODO costnya ganti ga ya (?)
+node1 = Node(soal1, [],0) # TODO costnya ganti ga ya (?)
 print("Solusi:")
 print_solution(node1, moves)

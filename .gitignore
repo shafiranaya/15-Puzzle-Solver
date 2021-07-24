@@ -5,3 +5,5 @@ __pycache__/
 
 # Coretan .txt
 *.txt
+
+.DS_Store

@@ -86,8 +86,6 @@ def get_child_nodes(node):
         position[i_new][j_new] = 0
         moves = node.get_moves()
         moves.append(direction)
-        # positions = node.get_position_so_far()
-        # positions.append(position)
         g = node.get_g()
         h = node.get_h()
         child = Node(position, moves, g+h)
@@ -116,14 +114,9 @@ def solve(susunan_awal):
             if (current_node.get_g() == 0):
                 print("Goal ketemu")
                 print("Queue length: ",len(queue))
-                # print("Solusi (position): ", current_node.get_position())
                 print("Simpul yang dibangkitkan",node_count)
                 solution = current_node.get_moves()
-                
-                # positions = current_node.get_position_so_far()
-
-                return solution, node_count
-                # return moves
+                return solution, node_count # return list of moves
             children = get_child_nodes(current_node)
             for child in children:
                 child_position = child.get_position()
@@ -132,8 +125,9 @@ def solve(susunan_awal):
                 heappush(queue, child)
                 expanded.append(child_position)
                 node_count += 1
-        # return None
+        return None
 
+# Command line print
 def print_solution(node, moves):
     i = 1
     for direction in moves:
@@ -142,23 +136,12 @@ def print_solution(node, moves):
         node.print_position()
         i+=1
 
-# TODO: validasi input ->
-# - Harus ada satu cell kosong
-# - Utk cell ga kosong, angkanya mesti 1-15
-# - gaboleh ada angka yg double
-
 def convert_matrix_to_list(matrix):
     new_list = []
     for i in range(4):
         for j in range(4):
             new_list.append(matrix[i][j])
     return new_list
-
-# # Hanya boleh SATU cell kosong
-# def is_one_empty(matrix):
-#     new_list = convert_matrix_to_list(matrix)
-#     count_empty = new_list.count(0)
-#     return (count_empty == 1)
 
 # Range: 0-15
 def is_out_of_range(matrix):
@@ -182,29 +165,3 @@ def is_not_unique(matrix):
 
 def is_valid(matrix):
     return (not is_out_of_range(matrix)) and (not is_not_unique(matrix))
-### DRIVER ###
-
-s_1 = [[1,2,3,4],[5,6,7,8],[9,10,0,11],[13,14,15,12]]
-soal1 = [[1,2,3,4],[5,6,0,8],[9,10,7,11],[13,14,15,12]]
-soal2 = [[0,2,3,4],[1,6,7,8],[5,10,11,12],[9,13,14,15]]
-soal3 = [[6,5,2,4],[9,1,3,8],[10,0,7,15],[13,14,12,11]]
-soal4 = [[1,9,4,8],[3,2,6,7],[13,10,11,12],[14,5,15,0]] #
-
-puzzle2 = [[5,1,3,4],[9,2,6,7],[13,10,11,8],[0,14,15,12]]
-puzzle3 = [[5,1,3,4],[9,2,6,7],[13,11,0,8],[14,10,15,12]]
-puzzle4 = [[1,6,7,5],[9,3,10,2],[13,8,4,12],[14,11,15,0]] # SUSAH
-puzzle5 = [[1,2,3,4],[5,6,7,0],[9,10,12,8],[11,13,14,15]]
-
-testcase1 = [[1,2,4,7],[5,6,0,3],[9,11,12,8],[13,10,14,15]] # 11 moves, 40 nodes
-testcase2 = [[1,2,12,3],[5,6,8,4],[13,9,11,15],[10,0,7,14]] # 20 moves, 192 nodes
-testcase3 = [[1,2,3,4],[5,6,7,8],[11,12,15,14],[10,9,13,0]] # 16 moves, 45 nodes
-
-soal_susah = [[1,9,5,6],[2,3,4,10],[7,8,13,15],[11,12,14,0]] # SUSAH
-
-print("---BATAS---")
-
-moves = solve(soal1)[0]
-print("MOVES =",moves)
-node1 = Node(soal1, [],0) # TODO costnya ganti ga ya (?)
-print("Solusi:")
-print_solution(node1, moves)

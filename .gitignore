@@ -3,10 +3,5 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Notes .txt
+# Coretan .txt
 *.txt
-animate.py
-animation.py
-Drawer.py
-Drawer_contoh.py
-slideshow_contoh.py
